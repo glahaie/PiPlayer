@@ -3,6 +3,7 @@ import { Navbar, Nav, NavItem, Button, ButtonGroup } from 'reactstrap';
 import FaPlay from 'react-icons/lib/fa/play';
 import FaPause from 'react-icons/lib/fa/pause';
 import FaStop from 'react-icons/lib/fa/stop';
+import 'whatwg-fetch'
 
 class PiPlayer extends Component {
   render() {
@@ -15,6 +16,13 @@ class PiPlayer extends Component {
 }
 
 class Controls extends Component {
+  constructor(props) {
+    super(props);
+
+    this.playStream = this.playStream.bind(this);
+    this.stopStream = this.stopStream.bind(this);
+  }
+
   render() {
     return (
       <div>
@@ -23,9 +31,9 @@ class Controls extends Component {
             <NavItem className="mx-auto">
 
               <ButtonGroup size="lg"> 
-                <Button> <FaStop /> </Button>
+                <Button onClick={() => this.stopStream()}> <FaStop /> </Button>
                 <Button> <FaPause /> </Button>
-                <Button> <FaPlay /> </Button>
+                <Button onClick={() => this.playStream()}> <FaPlay /> </Button>
               </ButtonGroup>
             </NavItem>
           </Nav>
@@ -33,7 +41,22 @@ class Controls extends Component {
       </div>
     );
   }
-}
 
+  playStream() {
+    return fetch('/play', {
+      method: 'PUT',
+    }).catch(function(error) {
+      console.log("error playing vlc stream");
+    });
+  }
+
+  stopStream() {
+    return fetch('/stop', {
+      method: 'PUT',
+    }).catch(function(error) {
+      console.log("error stopping vlc stream");
+    });
+  }
+}
 
 export default PiPlayer;
