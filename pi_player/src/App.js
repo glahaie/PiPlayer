@@ -43,7 +43,7 @@ class Controls extends Component {
   }
 
   playStream() {
-    return fetch('/play', {
+    return fetch('player/play', {
       method: 'PUT',
     }).catch(function(error) {
       console.log("error playing vlc stream");
@@ -51,7 +51,7 @@ class Controls extends Component {
   }
 
   stopStream() {
-    return fetch('/stop', {
+    return fetch('player/stop', {
       method: 'PUT',
     }).catch(function(error) {
       console.log("error stopping vlc stream");
