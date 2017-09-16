@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, Button, ButtonGroup } from 'reactstrap';
+import { Navbar, Nav, NavItem, Button, ButtonGroup, ListGroup, ListGroupItem } from 'reactstrap';
 import FaPlay from 'react-icons/lib/fa/play';
 import FaPause from 'react-icons/lib/fa/pause';
 import FaStop from 'react-icons/lib/fa/stop';
@@ -9,9 +9,55 @@ class PiPlayer extends Component {
   render() {
     return (
       <div className="test">
+        <Library />
         <Controls />
       </div>
     );
+  }
+}
+
+class Library extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {radios : []};  
+    this._playStream = this._playStream.bind(this);
+  }
+
+  componentDidMount() {
+  //TODO - should fetch somewhere else? 
+  //Get the list
+    fetch('http://127.0.0.1:5000/library', {
+      method: 'GET',
+    })
+    .then(response => {return response.json();})
+    .then(data => {this.setState({radios : data});});
+  }
+  render() {
+    return (
+        <div>
+          <ListGroup>
+            {this._radioList()}
+          </ListGroup>
+        </div>);
+  }
+
+  _radioList() {
+    return this.state.radios.map(radio => 
+      <ListGroupItem onClick={() => this._playStream(radio.id)} tag="button" key={radio.id.toString()}>{radio.name.toString()}</ListGroupItem>);
+  }
+
+  _playStream(radioId) {
+    return fetch('http://127.0.0.1:5000/player/play', {
+      headers: new Headers({'content-type': 'application/json'}),
+      method: 'POST',
+      mode : 'cors',
+      body : JSON.stringify({
+        stream : radioId
+      })
+    }).catch(function(error) {
+      console.log("error playing vlc stream");
+    });
   }
 }
 
@@ -43,16 +89,18 @@ class Controls extends Component {
   }
 
   playStream() {
-    return fetch('player/play', {
-      method: 'PUT',
+    return fetch('http://127.0.0.1:5000/player/play', {
+      method: 'POST',
+      mode : 'cors'
     }).catch(function(error) {
       console.log("error playing vlc stream");
     });
   }
 
   stopStream() {
-    return fetch('player/stop', {
-      method: 'PUT',
+    return fetch('http://127.0.0.1:5000/player/stop', {
+      method: 'POST',
+      mode : 'cors'
     }).catch(function(error) {
       console.log("error stopping vlc stream");
     });
