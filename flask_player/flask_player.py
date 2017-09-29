@@ -2,7 +2,7 @@
 
 # Small app to play radio streams in VLC
 
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, redirect, url_for
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS
 import vlc
@@ -19,8 +19,12 @@ app = Flask(__name__, static_folder="build")
 api = Api(app)
 cors = CORS(app)
 
-@app.route('/<path:path>')
+@app.route('/')
 def root(path):
+    return redirect(url_for('index.html'))
+
+@app.route('/<path:path>')
+def react(path):
     return send_from_directory('build', path)
 
 class RadioLibrary(Resource):
