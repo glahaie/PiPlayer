@@ -27,10 +27,10 @@ class Library extends Component {
   componentDidMount() {
   //TODO - should fetch somewhere else? 
   //Get the list
-    fetch('http://127.0.0.1:5000/library', {
+    fetch('/library', {
       method: 'GET',
     })
-    .then(response => {return response.json();})
+    .then(response => {return response.sjon();})
     .then(data => {this.setState({radios : data});});
   }
   render() {
@@ -48,7 +48,7 @@ class Library extends Component {
   }
 
   _playStream(radioId) {
-    return fetch('http://127.0.0.1:5000/player/play', {
+    return fetch('/player/play', {
       headers: new Headers({'content-type': 'application/json'}),
       method: 'POST',
       mode : 'cors',
@@ -89,7 +89,7 @@ class Controls extends Component {
   }
 
   playStream() {
-    return fetch('http://127.0.0.1:5000/player/play', {
+    return fetch('/player/play', {
       method: 'POST',
       mode : 'cors'
     }).catch(function(error) {
@@ -98,7 +98,7 @@ class Controls extends Component {
   }
 
   stopStream() {
-    return fetch('http://127.0.0.1:5000/player/stop', {
+    return fetch('/player/stop', {
       method: 'POST',
       mode : 'cors'
     }).catch(function(error) {

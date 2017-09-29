@@ -2,7 +2,7 @@
 
 # Small app to play radio streams in VLC
 
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS
 import vlc
@@ -15,9 +15,13 @@ db_location = "/home/guillaumel/Workspace/PiPlayer/radio_library/radio.db"
 vlc_instance = vlc.Instance()
 vlc_player = vlc_instance.media_player_new()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="build")
 api = Api(app)
 cors = CORS(app)
+
+@app.route('/<path:path>')
+def root(path):
+    return send_from_directory('build', path)
 
 class RadioLibrary(Resource):
 
@@ -80,11 +84,6 @@ class FlaskPlayer(Resource):
         media = vlc_instance.media_new(media_url)
         vlc_player.set_media(media)
         
-
-
-
-
-
 api.add_resource(FlaskPlayer, '/player/<string:action>')
 api.add_resource(RadioLibrary, '/library')
 
