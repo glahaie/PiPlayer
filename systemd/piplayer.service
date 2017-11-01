@@ -1,0 +1,12 @@
+[Unit]
+Description = Pi PLayer App
+After = network.target
+
+[Service]
+PermissionsStartOnly = true  
+WorkingDirectory = /home/pi/workspace/PiPlayer/flask_player
+ExecStart = /usr/local/bin/gunicorn flask_player:app -b 0.0.0.0:80 -w 4
+ExecStop = /bin/kill -s TERM $MAINPID
+
+[Install]
+WantedBy = multi-user.target 

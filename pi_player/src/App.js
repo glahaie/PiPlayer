@@ -30,7 +30,7 @@ class Library extends Component {
     fetch('/library', {
       method: 'GET',
     })
-    .then(response => {return response.sjon();})
+    .then(response => {return response.json();})
     .then(data => {this.setState({radios : data});});
   }
   render() {
