@@ -5,7 +5,7 @@ After = network.target
 [Service]
 PermissionsStartOnly = true  
 WorkingDirectory = /home/pi/workspace/PiPlayer/flask_player
-ExecStart = /usr/local/bin/gunicorn flask_player:app -b 0.0.0.0:80 -w 4
+ExecStart = /usr/local/bin/gunicorn flask_player:app -b 0.0.0.0:80 -w 1
 ExecStop = /bin/kill -s TERM $MAINPID
 
 [Install]
