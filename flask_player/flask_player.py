@@ -9,7 +9,7 @@ import vlc
 import sqlite3
 
 #TODO - move somewhere not hardcoded
-db_location = "/home/guillaumel/Workspace/PiPlayer/radio_library/radio.db"
+db_location = "/home/pi/workspace/PiPlayer/radio_library/radio.db"
 
 # TODO : move in a class of its ownflas
 vlc_instance = vlc.Instance()
@@ -20,8 +20,8 @@ api = Api(app)
 cors = CORS(app)
 
 @app.route('/')
-def root(path):
-    return redirect(url_for('index.html'))
+def root():
+    return react("index.html")
 
 @app.route('/<path:path>')
 def react(path):
@@ -92,5 +92,5 @@ api.add_resource(FlaskPlayer, '/player/<string:action>')
 api.add_resource(RadioLibrary, '/library')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
 
