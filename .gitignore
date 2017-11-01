@@ -1,0 +1,7 @@
+#Python files
+flask_player/__pycache__/
+flask_player/build/
+flask_player/flask/
+
+#React files
+pi_player/build/
